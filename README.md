@@ -35,9 +35,6 @@ entorno-virtual-creado/Lib/Pyside6/
 ```
 
 ## Antes de realizar tu primer push.......
-Asegurate que en tu archivo **.gitignore** aparezca la siguiente liga:
+Asegurate que en tu archivo **.gitignore** aparezca por lo menos el siguiente renglon:
 
-__pycache__/
-.git/
-.pyc
-nombre-entorno-virtual-creado/  <------------ para que no suba paquetes innecesarios a la repo
+nombre-entorno-virtual-creado/  <------------ para que al momento de subir tus cambios no subas paquetes innecesarios a la repo
