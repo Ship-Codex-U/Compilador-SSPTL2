@@ -33,3 +33,11 @@ Nota: la aplicación para realizar y editar la interfaz del proyecto (Qt Design 
 ```bash
 entorno-virtual-creado/Lib/Pyside6/
 ```
+
+## Antes de realizar tu primer push.......
+Asegurate que en tu archivo **.gitignore** aparezca la siguiente liga:
+
+__pycache__/
+.git/
+.pyc
+nombre-entorno-virtual-creado/  <------------ para que no suba paquetes innecesarios a la repo
