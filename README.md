@@ -28,3 +28,8 @@ nombre-entorno-virtual\Scripts\activate
 ```bash
 pip install -r requirements.txt
 ```
+
+Nota: la aplicación para realizar y editar la interfaz del proyecto (Qt Design - design.exe) lo podras encontrar dentro de tu entorno virtual en la siguiente ruta
+```bash
+entorno-virtual-creado/Lib/Pyside6/
+```
