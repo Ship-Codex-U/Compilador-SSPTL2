@@ -29,5 +29,7 @@ from . ui_functions import *
 # APP FUNCTIONS
 from . app_functions import *
 
-# NEW CLASSES
+# CLASSES FOR OUR PROYECT
 from . code_file import *
+from . compiler import *
+

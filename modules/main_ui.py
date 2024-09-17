@@ -598,8 +598,8 @@ class Ui_MainWindow(object):
         self.titleLeftApp.setObjectName(u"titleLeftApp")
         self.titleLeftApp.setGeometry(QRect(70, 8, 160, 20))
         font1 = QFont()
-        font1.setFamily(u"Segoe UI")
-        font1.setPointSize(8)
+        font1.setFamily(u"Segoe UI Semibold")
+        font1.setPointSize(12)
         font1.setBold(False)
         font1.setItalic(False)
         self.titleLeftApp.setFont(font1)
@@ -1130,32 +1130,32 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_23.addWidget(self.label_3)
 
-        self.lexical_analizer = QTableWidget(self.layout_table)
-        if (self.lexical_analizer.columnCount() < 2):
-            self.lexical_analizer.setColumnCount(2)
+        self.lexical_analizer_table = QTableWidget(self.layout_table)
+        if (self.lexical_analizer_table.columnCount() < 2):
+            self.lexical_analizer_table.setColumnCount(2)
         __qtablewidgetitem = QTableWidgetItem()
-        self.lexical_analizer.setHorizontalHeaderItem(0, __qtablewidgetitem)
+        self.lexical_analizer_table.setHorizontalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
-        self.lexical_analizer.setHorizontalHeaderItem(1, __qtablewidgetitem1)
-        if (self.lexical_analizer.rowCount() < 100):
-            self.lexical_analizer.setRowCount(100)
+        self.lexical_analizer_table.setHorizontalHeaderItem(1, __qtablewidgetitem1)
+        if (self.lexical_analizer_table.rowCount() < 100):
+            self.lexical_analizer_table.setRowCount(100)
         font4 = QFont()
         font4.setFamilies([u"Segoe UI"])
         __qtablewidgetitem2 = QTableWidgetItem()
         __qtablewidgetitem2.setFont(font4);
-        self.lexical_analizer.setVerticalHeaderItem(0, __qtablewidgetitem2)
+        self.lexical_analizer_table.setVerticalHeaderItem(0, __qtablewidgetitem2)
         __qtablewidgetitem3 = QTableWidgetItem()
-        self.lexical_analizer.setItem(0, 0, __qtablewidgetitem3)
+        self.lexical_analizer_table.setItem(0, 0, __qtablewidgetitem3)
         __qtablewidgetitem4 = QTableWidgetItem()
-        self.lexical_analizer.setItem(0, 1, __qtablewidgetitem4)
-        self.lexical_analizer.setObjectName(u"lexical_analizer")
+        self.lexical_analizer_table.setItem(0, 1, __qtablewidgetitem4)
+        self.lexical_analizer_table.setObjectName(u"lexical_analizer_table")
         sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.lexical_analizer.sizePolicy().hasHeightForWidth())
-        self.lexical_analizer.setSizePolicy(sizePolicy3)
-        self.lexical_analizer.setMinimumSize(QSize(600, 0))
-        self.lexical_analizer.setMaximumSize(QSize(600, 16777215))
+        sizePolicy3.setHeightForWidth(self.lexical_analizer_table.sizePolicy().hasHeightForWidth())
+        self.lexical_analizer_table.setSizePolicy(sizePolicy3)
+        self.lexical_analizer_table.setMinimumSize(QSize(600, 0))
+        self.lexical_analizer_table.setMaximumSize(QSize(600, 16777215))
         palette = QPalette()
         brush = QBrush(QColor(221, 221, 221, 255))
         brush.setStyle(Qt.SolidPattern)
@@ -1194,28 +1194,29 @@ class Ui_MainWindow(object):
 #if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
         palette.setBrush(QPalette.Disabled, QPalette.PlaceholderText, brush)
 #endif
-        self.lexical_analizer.setPalette(palette)
-        self.lexical_analizer.setFrameShape(QFrame.Shape.NoFrame)
-        self.lexical_analizer.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
-        self.lexical_analizer.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
-        self.lexical_analizer.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        self.lexical_analizer.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
-        self.lexical_analizer.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-        self.lexical_analizer.setShowGrid(True)
-        self.lexical_analizer.setGridStyle(Qt.PenStyle.SolidLine)
-        self.lexical_analizer.setSortingEnabled(True)
-        self.lexical_analizer.setRowCount(100)
-        self.lexical_analizer.setColumnCount(2)
-        self.lexical_analizer.horizontalHeader().setVisible(False)
-        self.lexical_analizer.horizontalHeader().setCascadingSectionResizes(True)
-        self.lexical_analizer.horizontalHeader().setDefaultSectionSize(200)
-        self.lexical_analizer.horizontalHeader().setStretchLastSection(True)
-        self.lexical_analizer.verticalHeader().setVisible(False)
-        self.lexical_analizer.verticalHeader().setCascadingSectionResizes(False)
-        self.lexical_analizer.verticalHeader().setHighlightSections(False)
-        self.lexical_analizer.verticalHeader().setStretchLastSection(True)
+        self.lexical_analizer_table.setPalette(palette)
+        self.lexical_analizer_table.setFrameShape(QFrame.Shape.NoFrame)
+        self.lexical_analizer_table.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+        self.lexical_analizer_table.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.lexical_analizer_table.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
+        self.lexical_analizer_table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.lexical_analizer_table.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.lexical_analizer_table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.lexical_analizer_table.setShowGrid(True)
+        self.lexical_analizer_table.setGridStyle(Qt.PenStyle.SolidLine)
+        self.lexical_analizer_table.setSortingEnabled(True)
+        self.lexical_analizer_table.setRowCount(100)
+        self.lexical_analizer_table.setColumnCount(2)
+        self.lexical_analizer_table.horizontalHeader().setVisible(True)
+        self.lexical_analizer_table.horizontalHeader().setCascadingSectionResizes(True)
+        self.lexical_analizer_table.horizontalHeader().setDefaultSectionSize(200)
+        self.lexical_analizer_table.horizontalHeader().setStretchLastSection(True)
+        self.lexical_analizer_table.verticalHeader().setVisible(False)
+        self.lexical_analizer_table.verticalHeader().setCascadingSectionResizes(False)
+        self.lexical_analizer_table.verticalHeader().setHighlightSections(False)
+        self.lexical_analizer_table.verticalHeader().setStretchLastSection(True)
 
-        self.verticalLayout_23.addWidget(self.lexical_analizer, 0, Qt.AlignmentFlag.AlignHCenter)
+        self.verticalLayout_23.addWidget(self.lexical_analizer_table)
 
 
         self.horizontalLayout_8.addWidget(self.layout_table)
@@ -1363,7 +1364,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 353, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -1696,7 +1697,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1754,20 +1755,20 @@ class Ui_MainWindow(object):
         self.label_editor.setText(QCoreApplication.translate("MainWindow", u"Editor", None))
         self.btn_generate_code.setText(QCoreApplication.translate("MainWindow", u" Generar Tabla", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Analizador Lexico", None))
-        ___qtablewidgetitem = self.lexical_analizer.horizontalHeaderItem(0)
+        ___qtablewidgetitem = self.lexical_analizer_table.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"0", None));
-        ___qtablewidgetitem1 = self.lexical_analizer.horizontalHeaderItem(1)
+        ___qtablewidgetitem1 = self.lexical_analizer_table.horizontalHeaderItem(1)
         ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"1", None));
-        ___qtablewidgetitem2 = self.lexical_analizer.verticalHeaderItem(0)
+        ___qtablewidgetitem2 = self.lexical_analizer_table.verticalHeaderItem(0)
         ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
 
-        __sortingEnabled = self.lexical_analizer.isSortingEnabled()
-        self.lexical_analizer.setSortingEnabled(False)
-        ___qtablewidgetitem3 = self.lexical_analizer.item(0, 0)
+        __sortingEnabled = self.lexical_analizer_table.isSortingEnabled()
+        self.lexical_analizer_table.setSortingEnabled(False)
+        ___qtablewidgetitem3 = self.lexical_analizer_table.item(0, 0)
         ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Test", None));
-        ___qtablewidgetitem4 = self.lexical_analizer.item(0, 1)
+        ___qtablewidgetitem4 = self.lexical_analizer_table.item(0, 1)
         ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"Text", None));
-        self.lexical_analizer.setSortingEnabled(__sortingEnabled)
+        self.lexical_analizer_table.setSortingEnabled(__sortingEnabled)
 
         self.labelBoxBlenderInstalation.setText(QCoreApplication.translate("MainWindow", u"FILE BOX", None))
         self.lineEdit.setText("")

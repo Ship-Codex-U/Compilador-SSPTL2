@@ -17,6 +17,7 @@
 import sys
 import os
 import platform
+import pprint
 
 # IMPORT / GUI AND MODULES AND WIDGETS
 # ///////////////////////////////////////////////////////////////
@@ -100,6 +101,13 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         widgets.stackedWidget.setCurrentWidget(widgets.home)
         widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))
+        
+        headers = ["Lexema", "Token", "Tipo"]
+        widgets.lexical_analizer_table.clear()
+        widgets.lexical_analizer_table.setColumnCount(3)
+        widgets.lexical_analizer_table.setHorizontalHeaderLabels(headers)
+        widgets.lexical_analizer_table.setRowCount(0)
+        
 
 
     # BUTTONS CLICK
@@ -215,8 +223,22 @@ class MainWindow(QMainWindow):
             
     
     @Slot()            
-    def generateTableData():
-        pass
+    def generateTableData(self):
+        self.ui.lexical_analizer_table
+        text = self.ui.plainTextEdit_editor.toPlainText()
+        result = Compiler.lexicalAnalyser(text)
+        
+        self.ui.lexical_analizer_table.setRowCount(len(result))
+        
+        for pos, (lexema, tokenType, numType) in enumerate(result):
+            lexemaWidget = QTableWidgetItem(str(lexema))
+            tokenTypeWidget = QTableWidgetItem(str(tokenType))
+            numTypeWidget = QTableWidgetItem(str(numType))
+            
+            self.ui.lexical_analizer_table.setItem(pos, 0, lexemaWidget)
+            self.ui.lexical_analizer_table.setItem(pos, 1, tokenTypeWidget)
+            self.ui.lexical_analizer_table.setItem(pos, 2, numTypeWidget)
+
 
 
 
