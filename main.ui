@@ -7,7 +7,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
+    <width>1257</width>
     <height>720</height>
    </rect>
   </property>
@@ -1643,22 +1643,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                   <property name="frameShadow">
                    <enum>QFrame::Shadow::Raised</enum>
                   </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_15">
-                   <property name="spacing">
-                    <number>0</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>10</number>
-                   </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_24">
                    <item>
                     <widget class="QStackedWidget" name="stackedWidget">
                      <property name="styleSheet">
@@ -1678,7 +1663,7 @@ background-repeat: no-repeat;</string>
                       </property>
                      </widget>
                      <widget class="QWidget" name="compiler">
-                      <layout class="QVBoxLayout" name="verticalLayout_8">
+                      <layout class="QVBoxLayout" name="verticalLayout_15">
                        <item>
                         <widget class="QFrame" name="layout_01">
                          <property name="maximumSize">
@@ -1873,7 +1858,7 @@ background-repeat: no-repeat;</string>
                          <property name="frameShadow">
                           <enum>QFrame::Shadow::Raised</enum>
                          </property>
-                         <layout class="QHBoxLayout" name="horizontalLayout_8">
+                         <layout class="QHBoxLayout" name="horizontalLayout_7">
                           <item>
                            <layout class="QVBoxLayout" name="layout_editor">
                             <property name="leftMargin">
@@ -1916,8 +1901,8 @@ background-repeat: no-repeat;</string>
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>497</width>
-                                 <height>428</height>
+                                 <width>476</width>
+                                 <height>309</height>
                                 </rect>
                                </property>
                                <property name="styleSheet">
@@ -2431,6 +2416,60 @@ background-repeat: no-repeat;</string>
                               </widget>
                              </item>
                             </layout>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QFrame" name="layout_03">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>115</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>16777215</width>
+                           <height>115</height>
+                          </size>
+                         </property>
+                         <property name="frameShape">
+                          <enum>QFrame::Shape::StyledPanel</enum>
+                         </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Shadow::Raised</enum>
+                         </property>
+                         <layout class="QVBoxLayout" name="verticalLayout_8">
+                          <item>
+                           <widget class="QLabel" name="label">
+                            <property name="text">
+                             <string>Salida</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPlainTextEdit" name="message_output">
+                            <property name="minimumSize">
+                             <size>
+                              <width>200</width>
+                              <height>0</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>16777215</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">background-color: rgb(33, 37, 43);
+margin-left: 15px;</string>
+                            </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
+                            </property>
                            </widget>
                           </item>
                          </layout>

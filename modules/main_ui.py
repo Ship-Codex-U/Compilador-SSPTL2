@@ -28,7 +28,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1280, 720)
+        MainWindow.resize(1257, 720)
         MainWindow.setMinimumSize(QSize(940, 560))
         self.styleSheet = QWidget(MainWindow)
         self.styleSheet.setObjectName(u"styleSheet")
@@ -963,10 +963,8 @@ class Ui_MainWindow(object):
         self.pagesContainer.setStyleSheet(u"")
         self.pagesContainer.setFrameShape(QFrame.Shape.NoFrame)
         self.pagesContainer.setFrameShadow(QFrame.Shadow.Raised)
-        self.verticalLayout_15 = QVBoxLayout(self.pagesContainer)
-        self.verticalLayout_15.setSpacing(0)
-        self.verticalLayout_15.setObjectName(u"verticalLayout_15")
-        self.verticalLayout_15.setContentsMargins(10, 10, 10, 10)
+        self.verticalLayout_24 = QVBoxLayout(self.pagesContainer)
+        self.verticalLayout_24.setObjectName(u"verticalLayout_24")
         self.stackedWidget = QStackedWidget(self.pagesContainer)
         self.stackedWidget.setObjectName(u"stackedWidget")
         self.stackedWidget.setStyleSheet(u"background: transparent;")
@@ -979,8 +977,8 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.home)
         self.compiler = QWidget()
         self.compiler.setObjectName(u"compiler")
-        self.verticalLayout_8 = QVBoxLayout(self.compiler)
-        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.verticalLayout_15 = QVBoxLayout(self.compiler)
+        self.verticalLayout_15.setObjectName(u"verticalLayout_15")
         self.layout_01 = QFrame(self.compiler)
         self.layout_01.setObjectName(u"layout_01")
         self.layout_01.setMaximumSize(QSize(16777215, 70))
@@ -1048,15 +1046,15 @@ class Ui_MainWindow(object):
         self.gridLayout_3.addWidget(self.layout_label_buttons, 0, 0, 1, 1)
 
 
-        self.verticalLayout_8.addWidget(self.layout_01)
+        self.verticalLayout_15.addWidget(self.layout_01)
 
         self.layout_02 = QFrame(self.compiler)
         self.layout_02.setObjectName(u"layout_02")
         self.layout_02.setMinimumSize(QSize(0, 150))
         self.layout_02.setFrameShape(QFrame.Shape.StyledPanel)
         self.layout_02.setFrameShadow(QFrame.Shadow.Raised)
-        self.horizontalLayout_8 = QHBoxLayout(self.layout_02)
-        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.horizontalLayout_7 = QHBoxLayout(self.layout_02)
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.layout_editor = QVBoxLayout()
         self.layout_editor.setObjectName(u"layout_editor")
         self.layout_editor.setContentsMargins(9, -1, 9, -1)
@@ -1079,7 +1077,7 @@ class Ui_MainWindow(object):
         self.scrollArea_4.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 497, 428))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 476, 309))
         self.scrollAreaWidgetContents_4.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -1114,7 +1112,7 @@ class Ui_MainWindow(object):
         self.layout_editor.addWidget(self.btn_generate_code)
 
 
-        self.horizontalLayout_8.addLayout(self.layout_editor)
+        self.horizontalLayout_7.addLayout(self.layout_editor)
 
         self.layout_table = QFrame(self.layout_02)
         self.layout_table.setObjectName(u"layout_table")
@@ -1219,10 +1217,36 @@ class Ui_MainWindow(object):
         self.verticalLayout_23.addWidget(self.lexical_analizer_table)
 
 
-        self.horizontalLayout_8.addWidget(self.layout_table)
+        self.horizontalLayout_7.addWidget(self.layout_table)
 
 
-        self.verticalLayout_8.addWidget(self.layout_02)
+        self.verticalLayout_15.addWidget(self.layout_02)
+
+        self.layout_03 = QFrame(self.compiler)
+        self.layout_03.setObjectName(u"layout_03")
+        self.layout_03.setMinimumSize(QSize(0, 115))
+        self.layout_03.setMaximumSize(QSize(16777215, 115))
+        self.layout_03.setFrameShape(QFrame.Shape.StyledPanel)
+        self.layout_03.setFrameShadow(QFrame.Shadow.Raised)
+        self.verticalLayout_8 = QVBoxLayout(self.layout_03)
+        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.label = QLabel(self.layout_03)
+        self.label.setObjectName(u"label")
+
+        self.verticalLayout_8.addWidget(self.label)
+
+        self.message_output = QPlainTextEdit(self.layout_03)
+        self.message_output.setObjectName(u"message_output")
+        self.message_output.setMinimumSize(QSize(200, 0))
+        self.message_output.setMaximumSize(QSize(16777215, 16777215))
+        self.message_output.setStyleSheet(u"background-color: rgb(33, 37, 43);\n"
+"margin-left: 15px;")
+        self.message_output.setReadOnly(True)
+
+        self.verticalLayout_8.addWidget(self.message_output)
+
+
+        self.verticalLayout_15.addWidget(self.layout_03)
 
         self.stackedWidget.addWidget(self.compiler)
         self.widgets = QWidget()
@@ -1557,7 +1581,7 @@ class Ui_MainWindow(object):
 
         self.stackedWidget.addWidget(self.widgets)
 
-        self.verticalLayout_15.addWidget(self.stackedWidget)
+        self.verticalLayout_24.addWidget(self.stackedWidget)
 
 
         self.horizontalLayout_4.addWidget(self.pagesContainer)
@@ -1770,6 +1794,7 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"Text", None));
         self.lexical_analizer_table.setSortingEnabled(__sortingEnabled)
 
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Salida", None))
         self.labelBoxBlenderInstalation.setText(QCoreApplication.translate("MainWindow", u"FILE BOX", None))
         self.lineEdit.setText("")
         self.lineEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Type here", None))
