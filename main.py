@@ -73,7 +73,7 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         widgets.btn_openFile.clicked.connect(self.openFileAction)
         widgets.btn_saveFile.clicked.connect(self.saveFileAction)
-        widgets.btn_generate_code.clicked.connect(self.generateTableData)
+        widgets.btn_generate_code.clicked.connect(self.compilerCode)
 
         # LEFT MENUS
         widgets.btn_home.clicked.connect(self.buttonClick)
@@ -223,14 +223,18 @@ class MainWindow(QMainWindow):
             
     
     @Slot()            
-    def generateTableData(self):
-        self.ui.lexical_analizer_table
+    def compilerCode(self):
+        self.ui.message_output.clear()
         text = self.ui.plainTextEdit_editor.toPlainText()
-        result = Compiler.lexicalAnalyser(text)
         
-        self.ui.lexical_analizer_table.setRowCount(len(result))
+        tokensFound, errors = Compiler.lexicalAnalyser(text)
         
-        for pos, (lexema, tokenType, numType) in enumerate(result):
+        print(f'tokens encontrados -> {tokensFound}')
+        
+        self.ui.lexical_analizer_table.setRowCount(len(tokensFound))
+        
+        for pos, (lexema, tokenType, numType) in enumerate(tokensFound):
+            print(f'pos dentro del for -> {pos}')
             lexemaWidget = QTableWidgetItem(str(lexema))
             tokenTypeWidget = QTableWidgetItem(str(tokenType))
             numTypeWidget = QTableWidgetItem(str(numType))
@@ -238,8 +242,43 @@ class MainWindow(QMainWindow):
             self.ui.lexical_analizer_table.setItem(pos, 0, lexemaWidget)
             self.ui.lexical_analizer_table.setItem(pos, 1, tokenTypeWidget)
             self.ui.lexical_analizer_table.setItem(pos, 2, numTypeWidget)
+        
+        print('paso al siguiente')
+            
+        if(errors):
+            for error in errors:
+                self.showMessageOutput(error, QColor("red"))
+        else:
+            self.showMessageOutput("Lexical analysis completed with no errors", QColor("green"))
+        
+        print('Salio de mostrar erroes')
+            
+        
+        parseErrors = Compiler.parse(tokensFound)
+        
+        print('paso al siguiente parse')
+        
+        if(parseErrors):
+            for i, error in enumerate(parseErrors):
+                self.showMessageOutput( f'{str(i + 1)}) {error}', QColor("red"))
+        else:
+            self.showMessageOutput("Syntax analysis completed with no errors", QColor("green")) 
+            
+        print('Salio de mostrar erroes parse')
+        
+    
+    def showMessageOutput(self, text, color):
+        # Obtencion del cursor actual
+        cursor = self.ui.message_output.textCursor()
+        cursor.movePosition(QTextCursor.End)
 
+        # Creacion del formato con el color solicitado
+        char_format = QTextCharFormat()
+        char_format.setForeground(color)
 
+        # Aplicacion del formato anterior al texto
+        cursor.setCharFormat(char_format)
+        cursor.insertText(text + "\n")
 
 
 if __name__ == "__main__":
