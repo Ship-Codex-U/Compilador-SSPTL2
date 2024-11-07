@@ -229,12 +229,9 @@ class MainWindow(QMainWindow):
         
         tokensFound, errors = Compiler.lexicalAnalyser(text)
         
-        print(f'tokens encontrados -> {tokensFound}')
-        
         self.ui.lexical_analizer_table.setRowCount(len(tokensFound))
         
         for pos, (lexema, tokenType, numType) in enumerate(tokensFound):
-            print(f'pos dentro del for -> {pos}')
             lexemaWidget = QTableWidgetItem(str(lexema))
             tokenTypeWidget = QTableWidgetItem(str(tokenType))
             numTypeWidget = QTableWidgetItem(str(numType))
@@ -242,29 +239,31 @@ class MainWindow(QMainWindow):
             self.ui.lexical_analizer_table.setItem(pos, 0, lexemaWidget)
             self.ui.lexical_analizer_table.setItem(pos, 1, tokenTypeWidget)
             self.ui.lexical_analizer_table.setItem(pos, 2, numTypeWidget)
-        
-        print('paso al siguiente')
             
         if(errors):
-            for error in errors:
-                self.showMessageOutput(error, QColor("red"))
+            for i, error in enumerate(errors):
+                self.showMessageOutput(f'{str(i + 1)}) {error}', QColor(230,25,25))
         else:
-            self.showMessageOutput("Lexical analysis completed with no errors", QColor("green"))
-        
-        print('Salio de mostrar erroes')
-            
+            self.showMessageOutput("Lexical analysis completed with no errors", QColor("green"))            
         
         parseErrors = Compiler.parse(tokensFound)
         
-        print('paso al siguiente parse')
-        
         if(parseErrors):
             for i, error in enumerate(parseErrors):
-                self.showMessageOutput( f'{str(i + 1)}) {error}', QColor("red"))
+                self.showMessageOutput( f'{str(i + 1)}) {error}', QColor(230,25,25))
         else:
-            self.showMessageOutput("Syntax analysis completed with no errors", QColor("green")) 
+            self.showMessageOutput("Syntax analysis completed with no errors", QColor("green"))
             
-        print('Salio de mostrar erroes parse')
+        semanticErrors = Compiler.semanticAnalyser()
+        
+        print(f"Errores Semantico -> {semanticErrors}")
+        
+        if(semanticErrors):
+            for i, error in enumerate(semanticErrors):
+                self.showMessageOutput( f'{str(i + 1)}) {error}', QColor(230,25,25))
+        else:
+            self.showMessageOutput("Semantic analysis completed with no errors", QColor("green"))
+        
         
     
     def showMessageOutput(self, text, color):
