@@ -33,3 +33,7 @@ from . app_functions import *
 from . code_file import *
 from . compiler import *
 
+
+# WINDOWS
+from . mips_window import *
+

@@ -1,5 +1,292 @@
 import re
 
+class Interpreter:
+    def __init__(self, code):
+        self.symbol_table = {}  # Tabla de símbolos para almacenar las variables y sus valores
+        self.declarations = self.parse_code(code)  # Declaraciones del código fuente
+        self.output = []  # Almacena los resultados de las instrucciones print
+        self.evaluate()
+    
+    def evaluate(self):
+        """Evalúa todas las declaraciones y realiza las operaciones necesarias."""
+        for decl in self.declarations:
+            if decl['type'] == 'declaration':
+                self.declare_variable(decl)
+            elif decl['type'] == 'assignment':
+                self.process_assignment(decl)
+            elif decl['type'] == 'print':
+                self.process_print(decl)
+    
+    def declare_variable(self, decl):
+        """Declara una variable y la inicializa con su valor inicial."""
+        var_name = decl['name']
+        var_type = decl['var_type']
+        # Inicializa con 0 o 0.0 según el tipo si no tiene una asignación inmediata
+        initial_value = 0 if var_type == 'int' else 0.0
+        self.symbol_table[var_name] = initial_value
+    
+    def process_assignment(self, decl):
+        """Procesa una asignación, evalúa la expresión y actualiza la tabla de símbolos."""
+        var_name = decl['name']
+        expression = decl['expression_type']
+        # Evalúa la expresión y actualiza la tabla de símbolos
+        self.symbol_table[var_name] = self.evaluate_expression(expression)
+    
+    def evaluate_expression(self, expr):
+        """Evalúa una expresión y devuelve el resultado."""
+        # Reemplaza las variables con sus valores actuales en la tabla de símbolos
+        for var in self.symbol_table:
+            expr = expr.replace(var, str(self.symbol_table[var]))
+        
+        # Evalúa la expresión aritmética
+        try:
+            result = eval(expr)
+            # Determina si el resultado debe ser entero o flotante
+            return int(result) if result == int(result) else float(result)
+        except Exception as e:
+            raise ValueError(f"Error evaluando la expresión '{expr}': {e}")
+    
+    def process_print(self, decl):
+        """Procesa una instrucción print y almacena el valor en la salida."""
+        var_name = decl['name']
+        if var_name in self.symbol_table:
+            value = self.symbol_table[var_name]
+            self.output.append(f"{var_name} = {value}")
+        else:
+            raise ValueError(f"Error: La variable '{var_name}' no está definida.")
+    
+    def parse_code(cls, code):
+        lines = code.strip().splitlines()
+
+        declarations = []
+        variables = {}  # Diccionario para almacenar variables y sus tipos
+
+        for line in lines:
+            line = line.strip()
+
+            # Declaración e inicialización (e.g., int suma = 0;)
+            decl_init_match = re.match(r"(int|float|double|char)\s+(\w+)\s*=\s*(.+);", line)
+            if decl_init_match:
+                var_type, name, expression = decl_init_match.groups()
+                variables[name] = var_type  # Registrar el tipo de la variable
+                declarations.append({
+                    'type': 'declaration',
+                    'name': name,
+                    'var_type': var_type
+                })
+                declarations.append({
+                    'type': 'assignment',
+                    'name': name,
+                    'var_type': var_type,
+                    'expression_type': expression
+                })
+                continue
+
+            # Declaración sin inicialización (e.g., int x;)
+            decl_match = re.match(r"(int|float|double|char)\s+(\w+);", line)
+            if decl_match:
+                var_type, name = decl_match.groups()
+                variables[name] = var_type  # Registrar el tipo de la variable
+                declarations.append({
+                    'type': 'declaration',
+                    'name': name,
+                    'var_type': var_type
+                })
+                continue
+
+            # Asignación (e.g., suma = x + y + 30;)
+            assign_match = re.match(r"(\w+)\s*=\s*(.+);", line)
+            if assign_match:
+                name, expression = assign_match.groups()
+                var_type = variables.get(name, 'int')  # Obtener el tipo de la variable si está registrado
+                declarations.append({
+                    'type': 'assignment',
+                    'name': name,
+                    'var_type': var_type,
+                    'expression_type': expression
+                })
+                continue
+
+            # Print (e.g., print(suma);)
+            print_match = re.match(r"print\((\w+)\);", line)
+            if print_match:
+                name = print_match.group(1)
+                var_type = variables.get(name, 'unknown')  # Obtener el tipo de la variable o marcar como desconocido
+                declarations.append({
+                    'type': 'print',
+                    'name': name,
+                    'var_type': var_type
+                })
+                continue
+
+        return declarations
+    
+    
+    def getResult(self):
+        """Devuelve el resultado de todas las instrucciones print."""
+        return "\n".join(self.output)
+
+class MIPSCodeGenerator:
+    def __init__(self, code):
+        self.declarations = self.parse_code(code)
+        self.mips_code = [] 
+        self.result = self.generate()
+
+    def generate(self):
+        # Sección de datos
+        self.mips_code.append(".data")
+        for decl in self.declarations:
+            if decl['type'] == 'declaration':
+                if decl['var_type'] == 'int':
+                    self.mips_code.append(f"{decl['name']}: .word 0")
+                elif decl['var_type'] == 'float':
+                    self.mips_code.append(f"{decl['name']}: .float {decl.get('initial_value', 0.0)}")
+
+        # Sección de texto
+        self.mips_code.append("\n.text")
+        self.mips_code.append("main:")
+
+        for decl in self.declarations:
+            if decl['type'] == 'assignment':
+                self.process_assignment(decl)
+            elif decl['type'] == 'print':
+                self.process_print(decl)
+
+        # Finalizar programa
+        self.mips_code.append("    li $v0, 10")
+        self.mips_code.append("    syscall")
+
+        return "\n".join(self.mips_code)
+
+    def process_assignment(self, decl):
+        """Procesa asignaciones, incluyendo expresiones complejas con variables y literales."""
+        expr = decl['expression_type']
+        var_type = decl['var_type']
+        operators = re.findall(r'[+\-*/]', expr)  # Encuentra todos los operadores
+        operands = re.split(r'[+\-*/]', expr)  # Divide la expresión en operandos
+
+        if var_type == 'int':
+            self.distribute_registers_int(operands, operators, decl['name'])
+        elif var_type == 'float':
+            self.distribute_registers_float(operands, operators, decl['name'])
+
+    def distribute_registers_int(self, operands, operators, result_var):
+        """Distribuye cálculos entre registros temporales para enteros."""
+        self.load_operand(operands[0].strip(), '$t0')  # Carga el primer operando en $t0
+
+        for i, op in enumerate(operators):
+            reg_target = f'$t{i + 1}'  # Usa $t1, $t2, etc., dinámicamente
+            self.load_operand(operands[i + 1].strip(), reg_target)  # Carga el siguiente operando
+            instr = {'+': 'add', '-': 'sub', '*': 'mul', '/': 'div'}[op]
+            self.mips_code.append(f"    {instr} $t0, $t0, {reg_target}")  # Actualiza $t0 con el resultado
+
+        self.mips_code.append(f"    sw $t0, {result_var}")  # Guarda el resultado final en memoria
+
+    def distribute_registers_float(self, operands, operators, result_var):
+        """Distribuye cálculos entre registros temporales para flotantes."""
+        self.load_operand(operands[0].strip(), '$f0', is_float=True)  # Carga el primer operando en $f0
+
+        for i, op in enumerate(operators):
+            reg_target = f'$f{i + 1}'  # Usa $f1, $f2, etc., dinámicamente
+            self.load_operand(operands[i + 1].strip(), reg_target, is_float=True)  # Carga el siguiente operando
+            instr = {'+': 'add.s', '-': 'sub.s', '*': 'mul.s', '/': 'div.s'}[op]
+            self.mips_code.append(f"    {instr} $f0, $f0, {reg_target}")  # Actualiza $f0 con el resultado
+
+        self.mips_code.append(f"    s.s $f0, {result_var}")  # Guarda el resultado final en memoria
+
+    def load_operand(self, operand, reg, is_float=False):
+        """Carga un operando en un registro, ya sea una variable o un literal."""
+        if operand.isdigit() or '.' in operand:  # Literal
+            if is_float:
+                self.mips_code.append(f"    li.s {reg}, {operand}")
+            else:
+                self.mips_code.append(f"    li {reg}, {operand}")
+        else:  # Variable
+            if is_float:
+                self.mips_code.append(f"    l.s {reg}, {operand}")
+            else:
+                self.mips_code.append(f"    lw {reg}, {operand}")
+
+    def process_print(self, decl):
+        """Procesa la impresión de valores."""
+        var_type = decl['var_type']
+        if var_type == 'int':
+            self.mips_code.append(f"    lw $a0, {decl['name']}")
+            self.mips_code.append("    li $v0, 1")  # Código de sistema para imprimir enteros
+        elif var_type == 'float':
+            self.mips_code.append(f"    l.s $f12, {decl['name']}")
+            self.mips_code.append("    li $v0, 2")  # Código de sistema para imprimir flotantes
+        self.mips_code.append("    syscall")
+
+    def parse_code(cls, code):
+        lines = code.strip().splitlines()
+
+        declarations = []
+        variables = {}  # Diccionario para almacenar variables y sus tipos
+
+        for line in lines:
+            line = line.strip()
+
+            # Declaración e inicialización (e.g., int suma = 0;)
+            decl_init_match = re.match(r"(int|float|double|char)\s+(\w+)\s*=\s*(.+);", line)
+            if decl_init_match:
+                var_type, name, expression = decl_init_match.groups()
+                variables[name] = var_type  # Registrar el tipo de la variable
+                declarations.append({
+                    'type': 'declaration',
+                    'name': name,
+                    'var_type': var_type
+                })
+                declarations.append({
+                    'type': 'assignment',
+                    'name': name,
+                    'var_type': var_type,
+                    'expression_type': expression
+                })
+                continue
+
+            # Declaración sin inicialización (e.g., int x;)
+            decl_match = re.match(r"(int|float|double|char)\s+(\w+);", line)
+            if decl_match:
+                var_type, name = decl_match.groups()
+                variables[name] = var_type  # Registrar el tipo de la variable
+                declarations.append({
+                    'type': 'declaration',
+                    'name': name,
+                    'var_type': var_type
+                })
+                continue
+
+            # Asignación (e.g., suma = x + y + 30;)
+            assign_match = re.match(r"(\w+)\s*=\s*(.+);", line)
+            if assign_match:
+                name, expression = assign_match.groups()
+                var_type = variables.get(name, 'int')  # Obtener el tipo de la variable si está registrado
+                declarations.append({
+                    'type': 'assignment',
+                    'name': name,
+                    'var_type': var_type,
+                    'expression_type': expression
+                })
+                continue
+
+            # Print (e.g., print(suma);)
+            print_match = re.match(r"print\((\w+)\);", line)
+            if print_match:
+                name = print_match.group(1)
+                var_type = variables.get(name, 'unknown')  # Obtener el tipo de la variable o marcar como desconocido
+                declarations.append({
+                    'type': 'print',
+                    'name': name,
+                    'var_type': var_type
+                })
+                continue
+
+        return declarations
+    
+    def getResult(self):
+        return self.result
+    
 class SemanticAnalyzer:
     def __init__(self):
         self.symbol_table = {}  # Tabla de símbolos: almacena nombre y tipo de cada variable
@@ -155,19 +442,18 @@ class Parser:
         """Procesa una declaración de variable"""
         tipo = self.get_next_token()  # tipo: int o float
         ident_token = self.peek_token()
-        expr_type = None
-        isAssigment = False
                 
         if ident_token[1] == 'identificador':
             var_name = ident_token[0]
             self.get_next_token()  # Consume el identificador
         
+            expr_type = None
+            
             if self.peek_token() and self.peek_token()[1] == 'asignación':
                 self.get_next_token()  # Consumes el token '='
-                isAssigment = True
+                expr_type = self.Expresion()
                 
-                expr_type = self.Expresion() 
-                print(f"Tipo expresion -> {expr_type}")
+                print(f"Tipo expresion DeclaracionVar -> {expr_type}")
             
             print(f"DeclaracionVar semantic_error -> {self.semantic_analyzer.get_errors()}")
                             
@@ -220,7 +506,7 @@ class Parser:
     def ExpresionPrime(self):
         """Procesa el resto de una expresión y devuelve el tipo resultante, soportando + o -."""
         token = self.peek_token()
-        if token and token[1] == 'operación suma':  # Puede ser + o -
+        if token and token[1] in ['operación suma', 'operación resta', 'operación multiplicación', 'operación división']:
             self.get_next_token()  # Consume el operador
             term_type = self.Termino()  # Obtiene el tipo del siguiente término
             expr_prime_type = self.ExpresionPrime()  # Recursivamente obtiene el tipo de ExpresionPrime
@@ -245,7 +531,8 @@ class Parser:
     def TerminoPrime(self):
         """Procesa el resto de un término, soportando * o /"""
         token = self.peek_token()
-        if token and (token[1] == 'operación multiplicación'):
+        if token and token[1] in ['operación multiplicación', 'operación division']:
+            op = token[1]  # Captura el operador actual
             self.get_next_token()  # Consumimos el token * o /
             factor_type = self.Factor()  # Obtiene el tipo del siguiente factor
             term_prime_type = self.TerminoPrime()  # Recursivamente obtiene el tipo de TerminoPrime
@@ -356,7 +643,7 @@ tokens = [
     (r'\+',                   'operación suma', 5),
     (r'-',                    'operación resta', 5),
     (r'\*',                   'operación multiplicación', 6),
-    (r'/',                    'operación division', 6),
+    (r'/',                    'operación división', 6),
     (r'<|<=|>|>=',            'operación relación', 7),
     (r'\|\|',                 'operación or', 8),
     (r'&&',                   'operación and', 9),
@@ -374,6 +661,7 @@ tokens = [
 class Compiler:
     parseData = None
     semanticErrors = None
+    declarations = []
     
     def __init__(self) -> None:
         pass
@@ -437,5 +725,17 @@ class Compiler:
     @classmethod
     def semanticAnalyser(cls):
         return cls.semanticErrors
+    
+    @classmethod
+    def MIPSGenerate(cls, code):
+        MIPSCode = MIPSCodeGenerator(code)
         
+        return MIPSCode.getResult()
+    
+    @classmethod
+    def CodeResultGenerate(cls, code):
+        ResultCode = Interpreter(code)
         
+        return ResultCode.getResult()
+    
+    

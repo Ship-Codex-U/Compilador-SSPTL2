@@ -224,10 +224,11 @@ class MainWindow(QMainWindow):
     
     @Slot()            
     def compilerCode(self):
+        
         self.ui.message_output.clear()
         text = self.ui.plainTextEdit_editor.toPlainText()
-        
-        tokensFound, errors = Compiler.lexicalAnalyser(text)
+                
+        tokensFound, lexicalErrors = Compiler.lexicalAnalyser(text)
         
         self.ui.lexical_analizer_table.setRowCount(len(tokensFound))
         
@@ -240,32 +241,33 @@ class MainWindow(QMainWindow):
             self.ui.lexical_analizer_table.setItem(pos, 1, tokenTypeWidget)
             self.ui.lexical_analizer_table.setItem(pos, 2, numTypeWidget)
             
-        if(errors):
-            for i, error in enumerate(errors):
+        if(lexicalErrors):
+            for i, error in enumerate(lexicalErrors):
                 self.showMessageOutput(f'{str(i + 1)}) {error}', QColor(230,25,25))
         else:
             self.showMessageOutput("Lexical analysis completed with no errors", QColor("green"))            
-        
-        parseErrors = Compiler.parse(tokensFound)
-        
-        if(parseErrors):
-            for i, error in enumerate(parseErrors):
-                self.showMessageOutput( f'{str(i + 1)}) {error}', QColor(230,25,25))
-        else:
-            self.showMessageOutput("Syntax analysis completed with no errors", QColor("green"))
             
-        semanticErrors = Compiler.semanticAnalyser()
-        
-        print(f"Errores Semantico -> {semanticErrors}")
-        
-        if(semanticErrors):
-            for i, error in enumerate(semanticErrors):
-                self.showMessageOutput( f'{str(i + 1)}) {error}', QColor(230,25,25))
-        else:
-            self.showMessageOutput("Semantic analysis completed with no errors", QColor("green"))
-        
-        
-    
+            parseErrors = Compiler.parse(tokensFound)
+            if(parseErrors):
+                for i, error in enumerate(parseErrors):
+                    self.showMessageOutput( f'{str(i + 1)}) {error}', QColor(230,25,25))
+            else:
+                self.showMessageOutput("Syntax analysis completed with no errors", QColor("green"))
+                
+                semanticErrors = Compiler.semanticAnalyser()
+                if(semanticErrors):
+                    for i, error in enumerate(semanticErrors):
+                        self.showMessageOutput( f'{str(i + 1)}) {error}', QColor(230,25,25))
+                else:
+                    self.showMessageOutput("Semantic analysis completed with no errors", QColor("green")) 
+                                        
+                    if self.ui.plainTextEdit_editor.toPlainText().strip():
+                        resultMIPS = Compiler.MIPSGenerate(text)
+                        resultCode = Compiler.CodeResultGenerate(text)
+                        
+                        self.MIPSWindow = ResultCompilerWindow(resultMIPS, resultCode)
+                        self.MIPSWindow.show()               
+                    
     def showMessageOutput(self, text, color):
         # Obtencion del cursor actual
         cursor = self.ui.message_output.textCursor()
